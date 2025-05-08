@@ -1,0 +1,577 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ form_title }} - Mi Presupuesto Mensual</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --success-color: #27ae60;
+            --danger-color: #e74c3c;
+            --warning-color: #f39c12;
+            --info-color: #2980b9;
+            --light-color: #ecf0f1;
+            --dark-color: #1a252f;
+        }
+        
+        body {
+            font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        
+        .navbar-nav .nav-link {
+            font-weight: 600;
+            padding: 0.75rem 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-nav .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+        
+        .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            padding: 0 20px;
+        }
+        
+        h1 {
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            border-bottom: 3px solid var(--secondary-color);
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+        
+        .btn {
+            border-radius: 5px;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-primary {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+            border-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-success {
+            background-color: var(--success-color);
+            border-color: var(--success-color);
+        }
+        
+        .btn-success:hover {
+            background-color: #219653;
+            border-color: #219653;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-secondary {
+            background-color: #7f8c8d;
+            border-color: #7f8c8d;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #6c7a7a;
+            border-color: #6c7a7a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+        
+        .card-title {
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+        
+        .alert {
+            border-radius: 10px;
+            border-left: 4px solid;
+        }
+        
+        .alert-success {
+            border-left-color: var(--success-color);
+        }
+        
+        .alert-danger {
+            border-left-color: var(--danger-color);
+        }
+        
+        .alert-info {
+            border-left-color: var(--info-color);
+        }
+        
+        .alert-warning {
+            border-left-color: var(--warning-color);
+        }
+        
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 5rem;
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Animaciones */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+        
+        /* Formularios */
+        .form-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-control, .form-select {
+            border: 2px solid #e9ecef;
+            border-radius: 5px;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+        }
+        
+        .invalid-feedback {
+            color: var(--danger-color);
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: block;
+        }
+        
+        .form-text {
+            color: #6c757d;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+        
+        hr {
+            opacity: 0.1;
+            margin: 1.5rem 0;
+        }
+        
+        /* Form field icons */
+        .input-with-icon {
+            position: relative;
+        }
+        
+        .input-icon {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 1rem;
+            color: #adb5bd;
+        }
+        
+        .has-icon {
+            padding-left: 3rem;
+        }
+        
+        /* Botones adicionales */
+        .form-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 1.5rem;
+            }
+            
+            .form-buttons {
+                flex-direction: column;
+            }
+            
+            .form-buttons .btn {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+        }
+        
+        /* Specific to transaction forms */
+        .transaction-type {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            margin-right: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .transaction-ingreso {
+            background-color: rgba(39, 174, 96, 0.1);
+            color: var(--success-color);
+        }
+        
+        .transaction-egreso {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: var(--danger-color);
+        }
+        
+        .datepicker {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23adb5bd' class='bi bi-calendar' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            padding-right: 2.5rem;
+        }
+    </style>
+    <!-- Agregando fuente Nunito desde Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Barra de navegación mejorada -->
+    <nav class="navbar navbar-expand-lg navbar-dark mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'tracker:transaccion_list' %}">
+                <i class="fas fa-wallet me-2"></i>MiPresupuesto
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link {% if 'transaccion' in request.path and not 'create' in request.path and not 'update' in request.path %}active{% endif %}" href="{% url 'tracker:transaccion_list' %}">
+                            <i class="fas fa-exchange-alt me-1"></i> Transacciones
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if 'categoria' in request.path and not 'create' in request.path and not 'update' in request.path %}active{% endif %}" href="{% url 'tracker:categoria_list' %}">
+                            <i class="fas fa-tags me-1"></i> Categorías
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if 'transaccion/create' in request.path or 'transaccion/update' in request.path %}active{% endif %}" href="{% url 'tracker:transaccion_create' %}">
+                            <i class="fas fa-plus-circle me-1"></i> Nueva Transacción
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if 'categoria/create' in request.path or 'categoria/update' in request.path %}active{% endif %}" href="{% url 'tracker:categoria_create' %}">
+                            <i class="fas fa-folder-plus me-1"></i> Nueva Categoría
+                        </a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <span class="text-white">
+                        <i class="fas fa-calendar-alt me-1"></i> {% now "F Y" %}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Encabezado con animación -->
+        <div class="mb-4 fade-in">
+            <h1><i class="fas fa-exchange-alt me-2"></i>{{ form_title }}</h1>
+            <!-- Agrega un subtítulo descriptivo -->
+            <p class="text-muted">
+                Registra los detalles de tu transacción para mantener un seguimiento preciso de tus finanzas.
+            </p>
+        </div>
+
+        <!-- Mensajes de alerta mejorados -->
+        {% if messages %}
+            <div class="fade-in" style="animation-delay: 0.1s;">
+                {% for message in messages %}
+                    <div class="alert alert-{% if message.tags %}{{ message.tags }}{% else %}info{% endif %} alert-dismissible fade show" role="alert">
+                        <div class="d-flex align-items-center">
+                            {% if message.tags == 'success' %}
+                                <i class="fas fa-check-circle me-2 fa-lg"></i>
+                            {% elif message.tags == 'error' or message.tags == 'danger' %}
+                                <i class="fas fa-exclamation-circle me-2 fa-lg"></i>
+                            {% elif message.tags == 'warning' %}
+                                <i class="fas fa-exclamation-triangle me-2 fa-lg"></i>
+                            {% else %}
+                                <i class="fas fa-info-circle me-2 fa-lg"></i>
+                            {% endif %}
+                            <div>{{ message }}</div>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <!-- Contenedor del formulario mejorado -->
+        <div class="row fade-in" style="animation-delay: 0.2s;">
+            <div class="col-lg-8">
+                <!-- Formulario principal -->
+                <div class="form-container">
+                    <!-- Consejos para transacciones -->
+                    <div class="card mb-4 bg-light border-0">
+                        <div class="card-body">
+                            <div class="d-flex align-items-start">
+                                <i class="fas fa-lightbulb text-warning me-3 mt-1 fa-2x"></i>
+                                <div>
+                                    <h5 class="card-title">Consejos para tu registro</h5>
+                                    <p class="card-text mb-0">
+                                        Asegúrate de incluir una descripción clara y seleccionar la categoría correcta. Si no encuentras una categoría adecuada, puedes <a href="{% url 'tracker:categoria_create' %}">crear una nueva</a> primero.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form method="post" novalidate class="needs-validation">
+                        {% csrf_token %}
+                        
+                        {% for field in form %}
+                            <div class="mb-4">
+                                <!-- Etiqueta personalizada con ícono -->
+                                <label for="{{ field.id_for_label }}" class="form-label">
+                                    {% if field.name == 'descripcion' %}
+                                        <i class="fas fa-font me-1"></i>
+                                    {% elif field.name == 'fecha' %}
+                                        <i class="fas fa-calendar-alt me-1"></i>
+                                    {% elif field.name == 'monto' %}
+                                        <i class="fas fa-dollar-sign me-1"></i>
+                                    {% elif field.name == 'categoria' %}
+                                        <i class="fas fa-tag me-1"></i>
+                                    {% else %}
+                                        <i class="fas fa-pencil-alt me-1"></i>
+                                    {% endif %}
+                                    {{ field.label }}
+                                </label>
+                                
+                                <!-- Personaliza cada campo según su tipo -->
+                                {% if field.name == 'descripcion' %}
+                                    <div class="input-with-icon">
+                                        <i class="fas fa-pen input-icon"></i>
+                                        <input type="text" name="{{ field.name }}" id="{{ field.id_for_label }}" class="form-control has-icon {% if field.errors %}is-invalid{% endif %}" placeholder="Ej. Compra de comestibles" value="{{ field.value|default_if_none:'' }}">
+                                    </div>
+                                {% elif field.name == 'fecha' %}
+                                    <div class="input-with-icon">
+                                        <i class="fas fa-calendar-alt input-icon"></i>
+                                        <input type="date" name="{{ field.name }}" id="{{ field.id_for_label }}" class="form-control has-icon datepicker {% if field.errors %}is-invalid{% endif %}" value="{{ field.value|date:'Y-m-d'|default_if_none:'' }}">
+                                    </div>
+                                {% elif field.name == 'monto' %}
+                                    <div class="input-with-icon">
+                                        <i class="fas fa-dollar-sign input-icon"></i>
+                                        <input type="number" name="{{ field.name }}" id="{{ field.id_for_label }}" step="0.01" min="0.01" class="form-control has-icon {% if field.errors %}is-invalid{% endif %}" placeholder="0.00" value="{{ field.value|default_if_none:'' }}">
+                                    </div>
+                                {% elif field.name == 'categoria' %}
+                                    <select name="{{ field.name }}" id="{{ field.id_for_label }}" class="form-select {% if field.errors %}is-invalid{% endif %}">
+                                        <option value="">-- Seleccione una categoría --</option>
+                                        {% for choice_id, choice_label in field.field.choices %}
+                                            <option value="{{ choice_id }}" {% if field.value|stringformat:"s" == choice_id|stringformat:"s" %}selected{% endif %}>
+                                                {{ choice_label }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                {% else %}
+                                    {{ field }}
+                                {% endif %}
+                                
+                                <!-- Texto de ayuda -->
+                                {% if field.help_text %}
+                                    <small class="form-text text-muted">
+                                        <i class="fas fa-info-circle me-1"></i> {{ field.help_text }}
+                                    </small>
+                                {% endif %}
+                                
+                                <!-- Mensajes de error -->
+                                {% for error in field.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        <i class="fas fa-exclamation-circle me-1"></i> {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+                        
+                        <!-- Botones de acción mejorados -->
+                        <div class="form-buttons">
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-check me-2"></i>{{ submit_button_text }}
+                            </button>
+                            <a href="{% url 'tracker:transaccion_list' %}" class="btn btn-secondary">
+                                <i class="fas fa-times me-2"></i>Cancelar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Panel lateral con información adicional -->
+            <div class="col-lg-4 d-none d-lg-block">
+                <div class="card mb-4">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Información Útil</h5>
+                    </div>
+                    <div class="card-body">
+                        <h6><i class="fas fa-question-circle me-2 text-primary"></i>¿Qué es una transacción?</h6>
+                        <p class="small mb-4">Una transacción representa cualquier movimiento de dinero, ya sea un ingreso (dinero que recibes) o un egreso (dinero que gastas).</p>
+                        
+                        <h6><i class="fas fa-lightbulb me-2 text-warning"></i>Consejos para categorizar</h6>
+                        <ul class="small mb-0">
+                            <li class="mb-2">Usa categorías específicas para facilitar el análisis posterior.</li>
+                            <li class="mb-2">Si realizas una compra con varios tipos de productos, considera dividirla en múltiples transacciones.</li>
+                            <li>Mantén la consistencia en tus categorizaciones para obtener mejores informes.</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Accesos Rápidos</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-grid gap-2">
+                            <a href="{% url 'tracker:transaccion_list' %}" class="btn btn-outline-primary">
+                                <i class="fas fa-list me-2"></i>Ver Todas las Transacciones
+                            </a>
+                            <a href="{% url 'tracker:categoria_list' %}" class="btn btn-outline-info">
+                                <i class="fas fa-tags me-2"></i>Administrar Categorías
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer mejorado -->
+    <footer class="text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <p>
+                        <i class="fas fa-wallet me-2"></i>
+                        <strong>MiPresupuestoMensual</strong>
+                    </p>
+                    <p class="small mb-0">&copy; {{ current_year }} Todos los derechos reservados.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript de Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+    
+    <!-- JavaScript adicional para mejorar la experiencia -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Auto-ocultar alertas después de 5 segundos
+            setTimeout(function() {
+                var alerts = document.querySelectorAll('.alert');
+                alerts.forEach(function(alert) {
+                    var bsAlert = new bootstrap.Alert(alert);
+                    bsAlert.close();
+                });
+            }, 5000);
+            
+            // Aplicar estilos a los campos de formulario
+            // Este script es necesario porque no podemos usar los filtros de Django directamente
+            const formControls = document.querySelectorAll('input:not([type="hidden"]), select, textarea');
+            formControls.forEach(function(field) {
+                // Agregar clases de Bootstrap si no están ya
+                if (field.tagName === 'SELECT' && !field.classList.contains('form-select')) {
+                    field.classList.add('form-select');
+                } else if (!field.classList.contains('form-control') && field.type !== 'checkbox' && field.type !== 'radio') {
+                    field.classList.add('form-control');
+                }
+                
+                // Marcar como inválido si tiene errores
+                if (field.nextElementSibling && field.nextElementSibling.classList.contains('invalid-feedback')) {
+                    field.classList.add('is-invalid');
+                }
+            });
+            
+            // Mostrar la categoría apropiada según la selección
+            const categoriaSelect = document.querySelector('select[name="categoria"]');
+            if (categoriaSelect) {
+                categoriaSelect.addEventListener('change', function() {
+                    const selectedOption = this.options[this.selectedIndex];
+                    const categoriaText = selectedOption.text || '';
+                    
+                    // Verificar si es ingreso o egreso según el texto
+                    if (categoriaText.includes('Ingreso') || categoriaText.toLowerCase().includes('ingreso')) {
+                        // Destacar como ingreso
+                        this.classList.add('border-success');
+                        this.classList.remove('border-danger');
+                    } else if (categoriaText.includes('Egreso') || categoriaText.toLowerCase().includes('egreso')) {
+                        // Destacar como egreso
+                        this.classList.add('border-danger');
+                        this.classList.remove('border-success');
+                    } else {
+                        // Neutro
+                        this.classList.remove('border-success', 'border-danger');
+                    }
+                });
+                
+                // Disparar el evento change para aplicar el estilo inicialmente
+                const changeEvent = new Event('change');
+                categoriaSelect.dispatchEvent(changeEvent);
+            }
+        });
+    </script>
+</body>
+</html>

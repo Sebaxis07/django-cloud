@@ -1,0 +1,511 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Transacciones - Mi Presupuesto Mensual</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --success-color: #27ae60;
+            --danger-color: #e74c3c;
+            --warning-color: #f39c12;
+            --info-color: #2980b9;
+            --light-color: #ecf0f1;
+            --dark-color: #1a252f;
+        }
+        
+        body {
+            font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        
+        .navbar-nav .nav-link {
+            font-weight: 600;
+            padding: 0.75rem 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-nav .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+        
+        .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            padding: 0 20px;
+        }
+        
+        h1 {
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            border-bottom: 3px solid var(--secondary-color);
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+        
+        .btn {
+            border-radius: 5px;
+            font-weight: 600;
+            padding: 0.5rem 1.25rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-primary {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+            border-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+        
+        .card-title {
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .balance-positivo { 
+            color: var(--success-color); 
+            font-weight: bold; 
+        }
+        
+        .balance-negativo { 
+            color: var(--danger-color); 
+            font-weight: bold; 
+        }
+        
+        .balance-cero { 
+            color: #6c757d; 
+        }
+        
+        .table {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .table thead th {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            padding: 1rem;
+        }
+        
+        .table tbody tr {
+            transition: all 0.2s ease;
+        }
+        
+        .table tbody tr:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+        
+        .table td {
+            padding: 1rem;
+            vertical-align: middle;
+        }
+        
+        .filter-form {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+        }
+        
+        .form-select, .form-control {
+            border-radius: 5px;
+            padding: 0.6rem;
+            border: 1px solid #ddd;
+        }
+        
+        .badge {
+            padding: 0.5rem 0.75rem;
+            font-weight: 600;
+            font-size: 0.8rem;
+            border-radius: 30px;
+        }
+        
+        .action-btn {
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin-right: 5px;
+            transition: all 0.2s ease;
+        }
+        
+        .action-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .alert {
+            border-radius: 10px;
+            border-left: 4px solid;
+        }
+        
+        .alert-success {
+            border-left-color: var(--success-color);
+        }
+        
+        .alert-danger {
+            border-left-color: var(--danger-color);
+        }
+        
+        .alert-info {
+            border-left-color: var(--info-color);
+        }
+        
+        .alert-warning {
+            border-left-color: var(--warning-color);
+        }
+        
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 5rem;
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Animaciones */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+        
+        /* Estilos para dispositivos móviles */
+        @media (max-width: 768px) {
+            .card {
+                margin-bottom: 1rem;
+            }
+            
+            .action-btn {
+                width: 30px;
+                height: 30px;
+            }
+        }
+        
+        /* Loader para operaciones asíncronas */
+        .loader {
+            border: 3px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 3px solid var(--secondary-color);
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+    <!-- Agregando fuente Nunito desde Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Barra de navegación mejorada -->
+    <nav class="navbar navbar-expand-lg navbar-dark mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'tracker:transaccion_list' %}">
+                <i class="fas fa-wallet me-2"></i>MiPresupuesto
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'tracker:transaccion_list' %}">
+                            <i class="fas fa-exchange-alt me-1"></i> Transacciones
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'tracker:categoria_list' %}">
+                            <i class="fas fa-tags me-1"></i> Categorías
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'tracker:transaccion_create' %}">
+                            <i class="fas fa-plus-circle me-1"></i> Nueva Transacción
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'tracker:categoria_create' %}">
+                            <i class="fas fa-folder-plus me-1"></i> Nueva Categoría
+                        </a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <span class="text-white">
+                        <i class="fas fa-calendar-alt me-1"></i> {% now "F Y" %}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Encabezado con animación -->
+        <div class="d-flex justify-content-between align-items-center mb-4 fade-in">
+            <h1><i class="fas fa-list-ul me-2"></i>Transacciones</h1>
+            <a href="{% url 'tracker:transaccion_create' %}" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i> Nueva Transacción
+            </a>
+        </div>
+
+        <!-- Mensajes de alerta mejorados -->
+        {% if messages %}
+            <div class="fade-in" style="animation-delay: 0.1s;">
+                {% for message in messages %}
+                    <div class="alert alert-{% if message.tags %}{{ message.tags }}{% else %}info{% endif %} alert-dismissible fade show" role="alert">
+                        <div class="d-flex align-items-center">
+                            {% if message.tags == 'success' %}
+                                <i class="fas fa-check-circle me-2 fa-lg"></i>
+                            {% elif message.tags == 'error' or message.tags == 'danger' %}
+                                <i class="fas fa-exclamation-circle me-2 fa-lg"></i>
+                            {% elif message.tags == 'warning' %}
+                                <i class="fas fa-exclamation-triangle me-2 fa-lg"></i>
+                            {% else %}
+                                <i class="fas fa-info-circle me-2 fa-lg"></i>
+                            {% endif %}
+                            <div>{{ message }}</div>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <!-- Formulario de filtro mejorado -->
+        <form method="get" class="filter-form fade-in" style="animation-delay: 0.2s;">
+            <div class="row g-3 align-items-end">
+                <div class="col-md-5">
+                    <label for="month" class="form-label"><i class="fas fa-calendar-day me-1"></i> Mes:</label>
+                    <select name="month" id="month" class="form-select">
+                        {% for month_num, month_name in months %}
+                            <option value="{{ month_num }}" {% if month_num == selected_month %}selected{% endif %}>{{ month_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-5">
+                    <label for="year" class="form-label"><i class="fas fa-calendar-alt me-1"></i> Año:</label>
+                    <select name="year" id="year" class="form-select">
+                        {% for year_val in years %}
+                            <option value="{{ year_val }}" {% if year_val == selected_year %}selected{% endif %}>{{ year_val }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-info w-100 text-white">
+                        <i class="fas fa-filter me-2"></i> Filtrar
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Tarjetas de resumen mejoradas -->
+        <div class="row mb-4 fade-in" style="animation-delay: 0.3s;">
+            <div class="col-md-4">
+                <div class="card bg-success text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="card-title"><i class="fas fa-arrow-circle-down me-2"></i>Ingresos</h5>
+                                <p class="card-text fs-4 mb-0">${{ total_ingresos|floatformat:0 }}</p>
+                            </div>
+                            <i class="fas fa-chart-line fa-3x opacity-25"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-danger text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="card-title"><i class="fas fa-arrow-circle-up me-2"></i>Egresos</h5>
+                                <p class="card-text fs-4 mb-0">${{ total_egresos|floatformat:0 }}</p>
+                            </div>
+                            <i class="fas fa-chart-pie fa-3x opacity-25"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card {% if balance > 0 %}bg-info{% elif balance < 0 %}bg-warning{% else %}bg-secondary{% endif %} text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="card-title"><i class="fas fa-balance-scale me-2"></i>Balance</h5>
+                                <p class="card-text fs-4 mb-0 {% if balance > 0 %}balance-positivo{% elif balance < 0 %}balance-negativo{% else %}balance-cero{% endif %}">
+                                    ${{ balance|floatformat:0 }}
+                                </p>
+                            </div>
+                            <i class="fas {% if balance > 0 %}fa-thumbs-up{% elif balance < 0 %}fa-thumbs-down{% else %}fa-equals{% endif %} fa-3x opacity-25"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabla de transacciones mejorada -->
+        {% if transacciones %}
+            <div class="table-responsive fade-in" style="animation-delay: 0.4s;">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th><i class="fas fa-calendar-day me-1"></i> Fecha</th>
+                            <th><i class="fas fa-file-alt me-1"></i> Descripción</th>
+                            <th><i class="fas fa-tag me-1"></i> Categoría</th>
+                            <th><i class="fas fa-exchange-alt me-1"></i> Tipo</th>
+                            <th class="text-end"><i class="fas fa-dollar-sign me-1"></i> Monto</th>
+                            <th><i class="fas fa-cogs me-1"></i> Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for transaccion in transacciones %}
+                        <tr class="align-middle">
+                            <td>{{ transaccion.fecha|date:"d/m/Y" }}</td>
+                            <td>{{ transaccion.descripcion }}</td>
+                            <td>
+                                <span class="d-inline-flex align-items-center">
+                                    <i class="fas fa-circle me-2" style="color: 
+                                    {% if transaccion.categoria.tipo == 'INGRESO' %}var(--success-color){% else %}var(--danger-color){% endif %}; 
+                                    font-size: 8px;"></i>
+                                    {{ transaccion.categoria.nombre }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="badge {% if transaccion.categoria.tipo == 'INGRESO' %}bg-success{% else %}bg-danger{% endif %}">
+                                    <i class="fas {% if transaccion.categoria.tipo == 'INGRESO' %}fa-arrow-down{% else %}fa-arrow-up{% endif %} me-1"></i>
+                                    {{ transaccion.categoria.get_tipo_display }}
+                                </span>
+                            </td>
+                            <td class="text-end fw-bold {% if transaccion.categoria.tipo == 'INGRESO' %}text-success{% else %}text-danger{% endif %}">
+                                ${{ transaccion.monto|floatformat:0 }}
+                            </td>
+                            <td>
+                                <a href="{% url 'tracker:transaccion_update' transaccion.pk %}" class="btn btn-sm btn-outline-primary action-btn" data-bs-toggle="tooltip" title="Editar">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a href="{% url 'tracker:transaccion_delete' transaccion.pk %}" class="btn btn-sm btn-outline-danger action-btn" data-bs-toggle="tooltip" title="Eliminar">
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="alert alert-info mt-4 fade-in" style="animation-delay: 0.4s;" role="alert">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-info-circle fa-2x me-3"></i>
+                    <div>
+                        <h4 class="alert-heading">No hay transacciones</h4>
+                        <p class="mb-0">No hay transacciones registradas para el período seleccionado.</p>
+                        <hr>
+                        <p class="mb-0">
+                            <a href="{% url 'tracker:transaccion_create' %}" class="btn btn-sm btn-primary mt-2">
+                                <i class="fas fa-plus me-2"></i>Crear nueva transacción
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Footer mejorado -->
+    <footer class="text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <p>
+                        <i class="fas fa-wallet me-2"></i>
+                        <strong>MiPresupuestoMensual</strong>
+                    </p>
+                    <p class="small mb-0">&copy; {{ current_year_template }} Todos los derechos reservados.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript de Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- JavaScript adicional para mejorar la experiencia -->
+    <script>
+        // Inicializar todos los tooltips
+        document.addEventListener('DOMContentLoaded', function() {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+            
+            // Auto-ocultar alertas después de 5 segundos
+            setTimeout(function() {
+                var alerts = document.querySelectorAll('.alert');
+                alerts.forEach(function(alert) {
+                    var bsAlert = new bootstrap.Alert(alert);
+                    bsAlert.close();
+                });
+            }, 5000);
+        });
+    </script>
+</body>
+</html>
