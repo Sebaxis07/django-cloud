@@ -72,7 +72,7 @@ def categoria_delete_view(request, pk):
             categoria.delete()
             messages.success(request, 'Categoría eliminada exitosamente.')
             return redirect('tracker:categoria_list')
-        except models.ProtectedError:
+        except ProtectedError:
             messages.error(request, 'No se puede eliminar esta categoría porque tiene transacciones asociadas.')
             return redirect('tracker:categoria_list')
     context = {
@@ -80,6 +80,7 @@ def categoria_delete_view(request, pk):
         'current_year': datetime.date.today().year,
     }
     return render(request, 'categoria_confirm_delete.html', context)
+
 
 
 # Vistas para Transacción
